@@ -4,14 +4,20 @@
 
     <!-- Calculator Result -->
     <div class="w-full rounded m-1 p-3 text-right lead font-weight-bold text-white bg-vue-dark">
-      {{ calculatorValue  }}
+      {{ calculatorValue || 0 }}
     </div>
 
     <!-- Calculator buttons -->
     <div class="row no-gutters">
       <div class="col-3" v-for="n in calculatorElements" :key="n">
-        <div class="lead text-white text-center m-1 py-3 bg-vue-dark rounded hover-class"
-             :class="{'bg-vue-green': specialDigits.includes(n)}"
+        <div v-if="!specialDigits.includes(n)"
+             class="lead text-white text-center m-1 py-3 bg-vue-dark rounded hover-normal-digit"
+             @click="action(n)">
+          {{n}}
+        </div>
+
+        <div v-else
+            class="lead text-white text-center m-1 py-3 bg-vue-dark rounded bg-vue-green hover-special-digit"
              @click="action(n)">
           {{n}}
         </div>
@@ -25,7 +31,7 @@ import {allDigits, operationDigits, specialDigits} from '/src/Utils/CalculatorCo
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "Calculadora",
+  name: "Calculator",
 
   props: {
     msg: String
@@ -36,7 +42,7 @@ export default {
       calculatorElements: allDigits,
       operator: null,
       previousCalculatorValue: '',
-      specialDigits: specialDigits
+      specialDigits
     }
   },
   methods:{
@@ -77,8 +83,13 @@ export default {
   .bg-vue-dark {
     background: #31475e;
   }
-  .hover-class:hover {
+  .hover-normal-digit:hover {
     cursor: pointer;
+    background: #3D5875;
+  }
+  .hover-special-digit:hover{
+    cursor: pointer;
+    background: #309167;
   }
   .bg-vue-green {
     background: #3fb984;
